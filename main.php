@@ -1,3 +1,3 @@
 <?php
-echo "Hola desde mi WordPress personalizado";
+echo "Hola desde mi WordPress personalizado,ahora esto lo edito";
 ?>
