@@ -1,21 +1,32 @@
 version: '3.8'
 services:
-  wordpress:
-    image: wordpress:latest
-    ports:
-      - "80:80"
-    volumes:
-      - [cite_start]./html:/var/www/html 
-    environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: user
-      WORDPRESS_DB_PASSWORD: password
-      WORDPRESS_DB_NAME: wordpress
-
+  # Base de datos necesaria para WordPress
   db:
-    image: mariadb:latest
+    image: mariadb:10.6
+    restart: always
     environment:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: user
       MYSQL_PASSWORD: password
       MYSQL_ROOT_PASSWORD: root_password
+    volumes:
+      - db_data:/var/lib/mysql
+  # Servicio de WordPress
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    restart: always
+    # IMPORTANTE: Escucha en el puerto 80 de la VM para que Vagrant lo redirija
+    ports:
+      - "80:80"
+    volumes:
+      # Sincroniza la carpeta local 'html' con el contenedor [cite: 31, 32]
+      - ./html:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: user
+      WORDPRESS_DB_PASSWORD: password
+      WORDPRESS_DB_NAME: wordpress
+volumes:
+  db_data:
