@@ -1,31 +1,21 @@
 version: '3.8'
-
 services:
-  db:
-    image: mariadb:10.6
-    restart: always
-    environment:
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: root_password
-    volumes:
-      - db_data:/var/lib/mysql
-
   wordpress:
-    depends_on:
-      - db
     image: wordpress:latest
-    restart: always
     ports:
       - "80:80"
     volumes:
-      - ./html:/var/www/html
+      - [cite_start]./html:/var/www/html 
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: user
       WORDPRESS_DB_PASSWORD: password
       WORDPRESS_DB_NAME: wordpress
 
-volumes:
-  db_data:
+  db:
+    image: mariadb:latest
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root_password
