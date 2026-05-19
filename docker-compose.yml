@@ -17,11 +17,11 @@ services:
       - db
     image: wordpress:latest
     restart: always
-    # IMPORTANTE: Escucha en el puerto 80 de la VM para que Vagrant lo redirija
+    
     ports:
       - "80:80"
     volumes:
-      # Sincroniza la carpeta local 'html' con el contenedor [cite: 31, 32]
+      
       - ./html:/var/www/html
     environment:
       WORDPRESS_DB_HOST: db
